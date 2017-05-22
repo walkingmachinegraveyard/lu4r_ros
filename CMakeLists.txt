@@ -40,6 +40,12 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * uncomment the generate_messages entry below
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
+## Generate args in the 'msg' folder
+ add_message_files(
+     DIRECTORY msg
+     FILES args.msg
+ )
+
 ## Generate messages in the 'msg' folder
  add_message_files(
      DIRECTORY msg
