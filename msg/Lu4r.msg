@@ -1,2 +1,1 @@
-string action
-args[] args
+Operation[] opList

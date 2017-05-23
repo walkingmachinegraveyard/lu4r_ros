@@ -31,32 +31,33 @@ def handle_goal(req):
     lu4r_url = 'http://' + str(lu4r_ip) + ':' + str(lu4r_port) + '/service/nlu'
 
     r = lu4r_json(req.sentence, lu4r_url)
-    lu4rList = []
-    lu4rItem = Lu4r()
-    lu4rList.append(lu4rItem)
+    lu4r = Lu4r()
+    opItem = Operation()
 
     for line in r.iter_lines():
         if line:
-            print line
             operation = re.compile('(\s*:op\d\s)?\([a-zA-Z0-9\-]+ / ([a-zA-Z\-]+)')
             m = operation.match(line)
             if m:
-                if lu4rItem.action != "" and lu4rItem.action != 'and':
-                    lu4rList.append(lu4rItem)
-                lu4rItem = Lu4r()
-                lu4rItem.action = m.group(2)
+                if opItem.action != "" and opItem.action != 'and':
+                    lu4r.opList.append(opItem)
+                opItem = Operation()
+                opItem.action = m.group(2)
             else:
                 action = re.compile('\s*:([a-zA-Z0-9]*) \([a-zA-Z0-9]* / ([a-zA-Z0-9]*)\)')
                 n = action.match(line)
                 if n:
-                    lu4rItem.args.append((n.group(1), n.group(2)))
+                    arg = args()
+                    arg.type = n.group(1)
+                    arg.content = n.group(2)
+                    opItem.args.append(arg)
 
-    if lu4rItem.action != "":
-        lu4rList.append(lu4rItem)
+    if opItem.action != "":
+        lu4r.opList.append(opItem)
 
-    print lu4rList
+    rospy.logout("Returning operation list - count : " + str(len(lu4r.opList)))
 
-    return lu4rList
+    return lu4r
 
 def lu4r_json(sentence, url):
     HYPO = {'hypotheses':[{"transcription":sentence,"confidence":"0.9","rank":"1"}]}

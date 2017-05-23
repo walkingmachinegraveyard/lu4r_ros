@@ -46,6 +46,12 @@ find_package(catkin REQUIRED COMPONENTS
      FILES args.msg
  )
 
+## Generate args in the 'msg' folder
+ add_message_files(
+     DIRECTORY msg
+     FILES Operation.msg
+ )
+
 ## Generate messages in the 'msg' folder
  add_message_files(
      DIRECTORY msg
