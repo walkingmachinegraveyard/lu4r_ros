@@ -1,3 +1,1 @@
-string action
-string goal
-string theme
+Operation[] opList
